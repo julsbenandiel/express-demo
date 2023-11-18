@@ -14,7 +14,7 @@ function getData(length: number) {
 		color: Utils.makeColor(),
 		name: Utils.makeProductName(),
 		image: faker.image.urlLoremFlickr({ category: "fashion" }),
-		price: faker.finance.amount({ min: 30, max: 1500 }),
+		price: parseInt(faker.finance.amount({ min: 30, max: 1500 })),
 		createdAt: new Date(),
 		updatedAt: new Date()
 	}))
@@ -24,7 +24,7 @@ function getData(length: number) {
 
 async function main() {
 	try {
-		const products = getData(500);
+		const products = getData(274);
 		await client.connect();
 		const db = client.db(Config.FASHION_CLOUD_DB);
 		const collection = db.collection("products");
