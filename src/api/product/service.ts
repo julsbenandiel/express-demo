@@ -10,7 +10,7 @@ class ProductService {
   async getProducts(searchParams: Record<string, any>) {
     try {
       const params = new URLSearchParams(searchParams)
-      const limit: number = 20;
+      const limit: number = 18;
       const page: number = params.get('page') ? (Number(params.get('page')) - 1) : 0;
       const offset = page * limit;
 
@@ -22,21 +22,26 @@ class ProductService {
           $regex: new RegExp(params.get('name'), 'i')
         }
 
-      if (params.get('filter')) {
-        const [filterBy, value] = params.get('filter').split(":")
-        filters[filterBy] = value
-      }
+      if (params.get('brand'))
+        filters['brandName'] = params.get('brand')
+
+      if (params.get('category'))
+        filters['category'] = params.get('category')
 
       if (params.get('sort')) {
         const [sortBy, order] = params.get('sort').split(":")
         sort[sortBy] = order
+      } else {
+        sort['stock'] = -1
       }
 
       const data = await this.repository.list({ limit, offset, filters, sort })
+      const pageCount = Math.ceil(data.total / limit)
 
       return {
         metadata: {
           page: page + 1,
+          pageCount,
           total: data.total
         },
         products: data.products
