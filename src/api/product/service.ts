@@ -60,7 +60,7 @@ class ProductService {
   getCategories = async () => {
     try {
       const categories = await this.repository.getCategories()
-      return categories.map((b) => b._id);
+      return categories.map((c) => c._id);
       
     } catch (error) {
       throw new Error(error)

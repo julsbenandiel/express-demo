@@ -1,11 +1,12 @@
 loadEnv()
 import * as express from 'express'
 import * as cors from 'cors'
-import globalErrorMiddleware from './middleware/global-error'
-import notFound from './middleware/not-found'
 import DBConnector from "./lib/database"
 import Config from "./lib/config"
 import API from './api'
+
+import globalErrorMiddleware from './middleware/global-error'
+import notFoundMiddleware from './middleware/not-found'
 
 const app = express()
 
@@ -13,10 +14,9 @@ app.use(cors({}))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-
 app.use("/api", API)
 
-app.use(notFound)
+app.use(notFoundMiddleware)
 app.use(globalErrorMiddleware)
 
 async function connectDatabase() {
