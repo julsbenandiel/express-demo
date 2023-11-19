@@ -38,6 +38,13 @@ class ProductService {
       const data = await this.repository.list({ limit, offset, filters, sort })
       const pageCount = Math.ceil(data.total / limit)
 
+      console.log({
+        filters,
+        sort,
+        limit,
+        offset
+      })
+
       return {
         metadata: {
           page: page + 1,
